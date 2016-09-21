@@ -1,0 +1,10 @@
+/*可以在这里添加你自己的css*/
+p{
+  font-size: 15px;
+  line-height: 26px;
+  margin: 0 0 10px;
+}
+body{
+  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #676a6c;
+}
