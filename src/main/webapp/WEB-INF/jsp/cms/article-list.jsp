@@ -121,15 +121,15 @@
 	                       	bts+='<a class="update glyphicon glyphicon-pencil ml5"></a>';
 	                   		bts+='<a class="delete glyphicon glyphicon-trash ml5"></a>';
 	                   		if(sortCount > 0){
-	                   		    bts+='<button class="recommend btn btn-default btn-xs ml5" data-type="0">取消推荐</button>';
+	                   		    bts+='<button class="recommend btn btn-default btn-xs ml5" data-is-execute-or-cancel="false">取消推荐</button>';
 	                   		}else{
-	                   		    bts+='<button class="recommend btn btn-success btn-xs ml5" data-type="1">推荐</button>';
+	                   		    bts+='<button class="recommend btn btn-success btn-xs ml5" data-is-execute-or-cancel="true">推荐</button>';
 	                   		}
 	                   		
 	                   		if(isTop > 0){
-	                   		    bts+='<button class="set-top btn btn-default btn-xs ml5" data-type="0">取消置顶</button>';
+	                   		    bts+='<button class="set-top btn btn-default btn-xs ml5" data-is-execute-or-cancel="false">取消置顶</button>';
 	                   		}else{
-	                   		    bts+='<button class="set-top btn btn-success btn-xs ml5" data-type="1">置顶</button>';
+	                   		    bts+='<button class="set-top btn btn-success btn-xs ml5" data-is-execute-or-cancel="true">置顶</button>';
 	                   		}
 	                   		
 	                   		return bts;
@@ -165,27 +165,27 @@
                 gridComplete:function(){ //请求完毕之后触发
 				   //修改
 		          $('.update').click(function(){
-		          	var dataId=$(this).parent().parent().find('td:eq(0)').html();
-					location.href='cms/toUpdateArticle?id='+dataId;
+		          	var dataId = $(this).parent().parent().find('td:eq(0)').html();
+					location.href='cms/toUpdateArticle?id=' + dataId;
 		          });
 		          
 		          //推荐
 				  $('.recommend').click(function(){
-				   	    var dataId=$(this).parent().parent().find('td:eq(0)').html();
-				   	    var type = $(this).data('type');
+				   	    var dataId = $(this).parent().parent().find('td:eq(0)').html();
+				   	    var isExecuteOrCancel = $(this).data('is-execute-or-cancel');
 				   	    layer.confirm('确定要推荐吗？', {icon: 3}, function(index){
 						    $.ajax({
-					   	   	  url:'cms/recommend?id='+dataId,
+					   	   	  url:'cms/recommend',
 					   	   	  dataType:'json',
 					   	   	  data : {
 					   	   	  	  id : dataId,
-					   	   	  	  type : type
+					   	   		  isExecuteOrCancel : isExecuteOrCancel
 					   	   	  },
 					   	   	  async:false,
 					   	   	  success:function(data){
 					   	   	  	 var status = data.status;
 					   	   	  	 var msg = data.msg;
-					   	   	  	 if(status==1){
+					   	   	  	 if(status == 1){
 					   	   	  	 	layer.alert('操作成功！');
 					   	   	  	 	$('#article-list').trigger('reloadGrid');
 					   	   	  	 }else{
@@ -198,15 +198,15 @@
 				   
 				   //置顶
 				  $('.set-top').click(function(){
-				   	    var dataId=$(this).parent().parent().find('td:eq(0)').html();
-				   	    var type = $(this).data('type');
+				   	    var dataId = $(this).parent().parent().find('td:eq(0)').html();
+				   	    var isExecuteOrCancel = $(this).data('is-execute-or-cancel');
 				   	    layer.confirm('确定要置顶吗？', {icon: 3}, function(index){
 						    $.ajax({
-					   	   	  url:'cms/setTop?id='+dataId,
-					   	   	  dataType:'json',
+					   	   	  url : 'cms/setTop',
+					   	   	  dataType : 'json',
 					   	   	  data : {
 					   	   	  	  id : dataId,
-					   	   	  	  type : type
+					   	   		  isExecuteOrCancel : isExecuteOrCancel
 					   	   	  },
 					   	   	  async:false,
 					   	   	  success:function(data){
@@ -224,14 +224,15 @@
 				   });    
 				   //删除
 				   $('.delete').click(function(){
-				   	    var dataId=$(this).parent().parent().find('td:eq(0)').html();
+				   	    var dataId = $(this).parent().parent().find('td:eq(0)').html();
 				   	    layer.confirm('确定要删除吗？', {icon: 3}, function(index){
 						    $.ajax({
-					   	   	  url:'cms/deleteArticle?id='+dataId,
+					   	   	  url:'cms/deleteArticle',
 					   	   	  dataType:'json',
+					   	   	  data : { id : dataId },
 					   	   	  async:false,
 					   	   	  success:function(data){
-					   	   	  	 var status=data.status;
+					   	   	  	 var status = data.status;
 					   	   	  	 var msg = data.msg;
 					   	   	  	 if(status==1){
 					   	   	  	 	layer.alert('删除成功！');

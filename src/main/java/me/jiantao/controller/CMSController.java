@@ -8,7 +8,6 @@ import me.jiantao.common.Result;
 import me.jiantao.po.Article;
 import me.jiantao.service.IArticleService;
 import me.jiantao.util.ServletUtil;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/cms")
 public class CMSController {
-	
-	private static Logger logger = Logger.getLogger(CMSController.class);
 	
 	@Resource
 	private IArticleService iArticleService;
@@ -74,9 +71,13 @@ public class CMSController {
 	
 	@RequestMapping("/setTop")
 	@ResponseBody
-	public Result setTop(int id, int type){
+	public Result setTop(int id, boolean isExecuteOrCancel){
 		try {
-			iArticleService.setTop(id, type);
+			if(isExecuteOrCancel){
+				iArticleService.executeSetTop(id);
+			}else{
+				iArticleService.cancelSetTop(id);
+			}
 			return Result.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -86,9 +87,13 @@ public class CMSController {
 	
 	@RequestMapping("/recommend")
 	@ResponseBody
-	public Result recommend(int id, int type){
+	public Result recommend(int id, boolean isExecuteOrCancel){
 		try {
-			iArticleService.recommend(id, type);
+			if(isExecuteOrCancel){
+				iArticleService.executeRecommend(id);
+			}else{
+				iArticleService.executeRecommend(id);
+			}
 			return Result.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,7 +135,6 @@ public class CMSController {
 	@ResponseBody
 	public Result addAllArticleIndex(){
 		try {
-			logger.info("添加所有索引");
 			iArticleService.addAllArticleIndex();
 			return Result.success();
 		} catch (Exception e) {
@@ -143,7 +147,6 @@ public class CMSController {
 	@ResponseBody
 	public Result deleteAllArticleIndex(){
 		try {
-			logger.info("删除所有索引");
 			iArticleService.deleteAllArticleIndex();
 			return Result.success();
 		} catch (Exception e) {
