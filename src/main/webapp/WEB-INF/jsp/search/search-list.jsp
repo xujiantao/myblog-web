@@ -77,27 +77,32 @@
 		        var status = data.status;
 		        var pr = data.pr;
 		        var ms = data.ms;
-		        if(status == 1 && pr != null && pr.rowsCount > 0){
-		            $(pr.list).each(function(i, o){
-		                html.push('<div class="search-result">');
-						html.push('<h3><a href="article/' + o.id + '.html" target="_blank">'+ o.title +'</a></h3>');
-						if(strIsNotNull(o.lead)){
-							html.push('<p class="content">'+ o.lead +'<p>');
-						}
-						html.push('<p class="content">'+ o.showContent +'<p>');
-						html.push('<div class="hr-line-dashed"></div>');
-						html.push('</div>');
-		            });
+		        if(status == 1){
+		        	if(pr.rowsCount > 0){
+			            $(pr.list).each(function(i, o){
+			                html.push('<div class="search-result">');
+							html.push('<h3><a href="article/' + o.id + '.html" target="_blank">'+ o.title +'</a></h3>');
+							if(strIsNotNull(o.lead)){
+								html.push('<p class="content">'+ o.lead +'<p>');
+							}
+							html.push('<p class="content">'+ o.showContent +'<p>');
+							html.push('<div class="hr-line-dashed"></div>');
+							html.push('</div>');
+			            });
+		        	}else{
+		        		 html.push('sorry！啥也木有枣到！');
+		        	}
 		            if(pr.pageCount > 1){
 		                createPageInfo(pr);
 		            }else{
 		            	$('#page-info').html('');
 		            }
 		            $('#result-count').html(pr.rowsCount);
-		        }else{
+		            $('#words').html(pr.other); //分词
+		        }else{ 
+		            var msg = data.msg;
+		            layer.alert('搜索错误，原因：' + msg);
 		            html.push('sorry！啥也木有枣到！');
-		            $('#result-count').html(0);
-		            $('#page-info').html('');
 		        }
 		        
 		        html.push('</div>');
@@ -105,7 +110,6 @@
 		        $('#show-keyword').html(data.keyword);
 		        $('#ms').html(ms);
 		        $('#title-part').show();
-		        $('#words').html(pr.other); //分词
 		        
 				$resultList.html(html.join(''));
 		    },

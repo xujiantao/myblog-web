@@ -1,17 +1,12 @@
 package me.jiantao.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import me.jiantao.common.PageResult;
 import me.jiantao.po.Article;
 import me.jiantao.search.IArticleSearchService;
 import me.jiantao.util.StringUtil;
-
-import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,15 +33,14 @@ public class SearchController {
 	public Map<String,Object> searchArticle(String keyword, PageResult<Article> pr){
 		long startTime = System.currentTimeMillis();
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("status", 0);
 		try {
 			iArticleSearchService.getArticleByPage(keyword, pr);
 			map.put("status", 1);
 			map.put("pr", pr);
-		} catch (SolrServerException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			map.put("status", 0);
+			map.put("msg", e.getMessage());
 		}
 		long ms = System.currentTimeMillis() - startTime;
 		map.put("ms", ms); //查询用时

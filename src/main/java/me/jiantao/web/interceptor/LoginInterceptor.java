@@ -16,8 +16,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		Object obj =request.getSession().getAttribute(Constant.SESSION_ME);
-		if(obj!=null){
+		Object obj = request.getSession().getAttribute(Constant.SESSION_ME);
+		if(obj != null){
 			return true;
 		}else{
 			request.getRequestDispatcher("/login").forward(request, response);
