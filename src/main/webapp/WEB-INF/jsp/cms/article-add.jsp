@@ -136,7 +136,7 @@
            	   	  		$self.html('确定');
            	   	  		if(status==1){
            	   	  			layer.alert('添加成功！');
-           	   	  			//location.href='cms/articleList';
+           	   	  			location.href='cms/articleList';
            	   	  		}else{
            	   	  			layer.alert('添加失败！原因：'+msg);
            	   	  		};

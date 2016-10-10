@@ -44,7 +44,7 @@ public class SearchController {
 		}
 		long ms = System.currentTimeMillis() - startTime;
 		map.put("ms", ms); //查询用时
-		map.put("keyword", StringUtil.escape(keyword)); //转义后的关键字
+		map.put("keyword", StringUtil.HtmlEscape(keyword)); //转义后的关键字
 		return map;
 	}
 }
